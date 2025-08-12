@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WeatherView: View {
+    @State private var viewModel = WeatherViewModel()
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -25,7 +27,7 @@ struct WeatherView: View {
                         Text("Wild Weather")
                             .font(.largeTitle)
 
-                        Text("42°F")
+                        Text("\(viewModel.temperature)°F")
                             .font(.system(size: 150, weight: .thin))
                         
                         Text("Wind 10mph, feels like 36°F")
@@ -39,6 +41,10 @@ struct WeatherView: View {
                         Image(systemName: "gear")
                             .foregroundStyle(.white)
                     }
+                }
+                .task {
+                    await viewModel.getData()
+                    
                 }
             }
         }
