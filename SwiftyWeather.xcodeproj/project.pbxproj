@@ -10,9 +10,22 @@
 		14F64A0B2E4AD3320082BD5E /* SwiftyWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		14F64A2D2E4AD4D30082BD5E /* Exceptions for "SwiftyWeather" folder in "SwiftyWeather" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 14F64A0A2E4AD3320082BD5E /* SwiftyWeather */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		14F64A0D2E4AD3320082BD5E /* SwiftyWeather */ = {
+		14F64A292E4AD4D30082BD5E /* SwiftyWeather */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				14F64A2D2E4AD4D30082BD5E /* Exceptions for "SwiftyWeather" folder in "SwiftyWeather" target */,
+			);
 			path = SwiftyWeather;
 			sourceTree = "<group>";
 		};
@@ -32,7 +45,7 @@
 		14F64A022E4AD3320082BD5E = {
 			isa = PBXGroup;
 			children = (
-				14F64A0D2E4AD3320082BD5E /* SwiftyWeather */,
+				14F64A292E4AD4D30082BD5E /* SwiftyWeather */,
 				14F64A0C2E4AD3320082BD5E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +74,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				14F64A0D2E4AD3320082BD5E /* SwiftyWeather */,
+				14F64A292E4AD4D30082BD5E /* SwiftyWeather */,
 			);
 			name = SwiftyWeather;
 			packageProductDependencies = (
@@ -256,9 +269,9 @@
 				DEVELOPMENT_TEAM = CNTHG5ZQZP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftyWeather/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -284,9 +297,9 @@
 				DEVELOPMENT_TEAM = CNTHG5ZQZP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftyWeather/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
