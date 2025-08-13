@@ -15,31 +15,56 @@ struct WeatherView: View {
             ZStack {
                 Color.cyan.opacity(0.75)
                     .ignoresSafeArea()
-                VStack {
-                    Image(systemName: "cloud.sun.rain.fill")
+                VStack(spacing: 0) {
+                    Image(systemName: viewModel.getWeatherIcon(for: viewModel.weatherCode))
                         .symbolRenderingMode(.multicolor)
                          .resizable()
                         .scaledToFit()
                         .foregroundStyle(.white)
                         .padding(.horizontal)
+                        .foregroundStyle(.white)
                     
                     VStack {
-                        Text("Wild Weather")
+                        Text(viewModel.getWeatherDescription(for: viewModel.weatherCode))
                             .font(.largeTitle)
+                            .foregroundStyle(.white)
 
-                        Text("\(viewModel.temperature)°F")
+                        Text("\(Int(round(viewModel.temperature)))°F")
                             .font(.system(size: 150, weight: .thin))
+                            .foregroundStyle(.white)
                         
-                        Text("Wind 10mph, feels like 36°F")
+                        Text("Wind \(Int(round(viewModel.windspeed)))mph, feels like \(Int(round(viewModel.feelsLike)))°F")
                             .padding(.bottom)
+                            .foregroundStyle(.white)
+                        
+                        List {
+                            ForEach(0..<viewModel.dailyWeatherCode.count, id: \.self) { index in
+                                HStack(alignment: .top) {
+                                    Image(systemName: viewModel.getWeatherIcon(for: viewModel.dailyWeatherCode[index]))
+                                    Text("\(viewModel.date[index])")
+                                        .font(.title2)
+                                    Spacer()
+                                    Text("\(Int(viewModel.dailyLowTemp[index]))°F")
+                                        .font(.title2)
+                                    Text("/")
+                                        .font(.title2)
+                                    Text("\(Int(viewModel.dailyHighTemp[index]))°F").bold()
+                                        .font(.title)
+                                }
+                                
+                            }
+                        }
+                        .listStyle(.plain)
                     }
-                    .foregroundStyle(.white)
                 }
-                .padding()
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Image(systemName: "gear")
-                            .foregroundStyle(.white)
+                        Button {
+                            //TODO:
+                        } label: {
+                            Image(systemName: "gear")
+                                .foregroundStyle(.white)
+                        }
                     }
                 }
                 .task {

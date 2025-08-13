@@ -9,6 +9,7 @@ import Foundation
 
 struct Weather: Codable {
     var current: Current
+    var daily: Daily
 }
 
 struct Current: Codable {
@@ -16,4 +17,11 @@ struct Current: Codable {
     var apparent_temperature: Double
     var weather_code: Int
     var wind_speed_10m: Double
+}
+
+struct Daily: Codable {
+    var time: [String]
+    var weather_code: [Int]
+    var temperature_2m_max: [Double]
+    var temperature_2m_min: [Double]
 }
