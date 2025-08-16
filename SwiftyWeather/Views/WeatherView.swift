@@ -41,7 +41,7 @@ struct WeatherView: View {
                             ForEach(0..<viewModel.dailyWeatherCode.count, id: \.self) { index in
                                 HStack(alignment: .top) {
                                     Image(systemName: viewModel.getWeatherIcon(for: viewModel.dailyWeatherCode[index]))
-                                    Text("\(viewModel.date[index])")
+                                    Text("\(viewModel.getWeekDay(for: index))")
                                         .font(.title2)
                                     Spacer()
                                     Text("\(Int(viewModel.dailyLowTemp[index]))°F")
@@ -53,6 +53,9 @@ struct WeatherView: View {
                                 }
                                 
                             }
+                            .listRowBackground(Color.clear)
+                            .foregroundStyle(.white)
+
                         }
                         .listStyle(.plain)
                     }

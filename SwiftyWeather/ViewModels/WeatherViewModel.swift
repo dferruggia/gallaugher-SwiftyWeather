@@ -51,7 +51,13 @@ final class WeatherViewModel {
         }
     }
     
+    func getWeekDay(for offset: Int) -> String {
+        let date = Calendar.current.date(byAdding: .day, value: offset, to: Date.now)!
+        let dayNumber = Calendar.current.component(.weekday, from: date)
+        return Calendar.current.weekdaySymbols[dayNumber - 1]
+    }
 }
+
 extension WeatherViewModel {
     func getWeatherDescription(for code: Int) -> String {
         switch code {
