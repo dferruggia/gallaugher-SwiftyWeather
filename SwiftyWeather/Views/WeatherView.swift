@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct WeatherView: View {
     @State private var viewModel = WeatherViewModel()
+    @State private var showPreferenceView = false
+    @State private var degreeSymbol = "°F"
+    @State private var windSpeedUnit: String = "mph"
+    @Environment(\.modelContext) private var modelContext
+    @Query var preferences: [Preference] = []
     
     var body: some View {
         NavigationStack {
@@ -29,11 +35,11 @@ struct WeatherView: View {
                             .font(.largeTitle)
                             .foregroundStyle(.white)
 
-                        Text("\(Int(round(viewModel.temperature)))°F")
+                        Text("\(Int(round(viewModel.temperature)))\(degreeSymbol)")
                             .font(.system(size: 150, weight: .thin))
                             .foregroundStyle(.white)
                         
-                        Text("Wind \(Int(round(viewModel.windspeed)))mph, feels like \(Int(round(viewModel.feelsLike)))°F")
+                        Text("Wind \(Int(round(viewModel.windspeed)))\(windSpeedUnit), feels like \(Int(round(viewModel.feelsLike)))\(degreeSymbol)")
                             .padding(.bottom)
                             .foregroundStyle(.white)
                         
@@ -44,11 +50,11 @@ struct WeatherView: View {
                                     Text("\(viewModel.getWeekDay(for: index))")
                                         .font(.title2)
                                     Spacer()
-                                    Text("\(Int(viewModel.dailyLowTemp[index]))°F")
+                                    Text("\(Int(viewModel.dailyLowTemp[index]))\(degreeSymbol)")
                                         .font(.title2)
                                     Text("/")
                                         .font(.title2)
-                                    Text("\(Int(viewModel.dailyHighTemp[index]))°F").bold()
+                                    Text("\(Int(viewModel.dailyHighTemp[index]))\(degreeSymbol)").bold()
                                         .font(.title)
                                 }
                                 
@@ -60,25 +66,47 @@ struct WeatherView: View {
                         .listStyle(.plain)
                     }
                 }
+                .sheet(isPresented: $showPreferenceView, content: {
+                    PreferenceView()
+                }) // end .sheet
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            //TODO:
+                            showPreferenceView.toggle()
                         } label: {
                             Image(systemName: "gear")
                                 .foregroundStyle(.white)
                         }
                     }
                 }
+                .onChange(of: preferences) {
+                    Task {
+                        await callWeatherAPI()
+                    }
+                }
                 .task {
-                    await viewModel.getData()
-                    
+                    await callWeatherAPI()
                 }
             }
+        }
+    }
+    
+    private func callWeatherAPI() async {
+        if preferences.isEmpty {
+            await viewModel.getData()
+        } else {
+            if preferences[0].degreeUnitShowing {
+                degreeSymbol = preferences[0].selectedUnit == .imperial ? "°F" : "°C"
+            } else {
+                degreeSymbol = "°"
+            }
+            windSpeedUnit = preferences[0].selectedUnit == .imperial ? "mph" : "kmh"
+            await viewModel.getData(latitude: preferences[0].latString, longitude: preferences[0].longString, temperatureUnit: preferences[0].selectedUnit == .imperial ? "fahrenheit" : "celsius", windSpeedUnit: windSpeedUnit)
         }
     }
 }
 
 #Preview {
     WeatherView()
+        .modelContainer(Preference.preview)
 }

@@ -12,6 +12,7 @@ struct SwiftyWeatherApp: App {
     var body: some Scene {
         WindowGroup {
             WeatherView()
+                .modelContainer(for: Preference.self)
         }
     }
 }

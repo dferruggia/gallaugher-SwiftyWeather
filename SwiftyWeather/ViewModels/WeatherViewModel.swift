@@ -22,7 +22,8 @@ final class WeatherViewModel {
     var dailyHighTemp: [Double] = []
     var dailyLowTemp: [Double] = []
     
-    func getData() async {
+    func getData(latitude: String = "42.33467401570891", longitude: String = "-71.17007347605109", temperatureUnit: String = "fahrenheit", windSpeedUnit:String = "mph") async {
+        urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&hourly=uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&temperature_unit=\(temperatureUnit)&wind_speed_unit=\(windSpeedUnit)&precipitation_unit=inch&timezone=auto"
         guard let url = URL(string: urlString) else {
             print("😡 Could not create a URL from urlString '\(urlString)'")
             return

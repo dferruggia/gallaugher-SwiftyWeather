@@ -6,22 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PreferenceView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    @Query var preferences: [Preference] = []
     
     @State var locationName = ""
     @State var latString = ""
     @State var longString = ""
     @State var selectedUnit: UnitSystem = .imperial
-    @State var degreeSymbolShowing = true
+    @State var degreeUnitShowing = true
     
     private var degreeUnit: String {
-        if degreeSymbolShowing {
+        if degreeUnitShowing {
             selectedUnit == .imperial ? "F" : "C"
         } else {
             ""
-        }
-    }
+        } // end if
+    } // end degreeUnit
     
     var body: some View {
         NavigationStack {
@@ -45,7 +49,7 @@ struct PreferenceView: View {
                         .textFieldStyle(.roundedBorder)
                         .padding()
                         .padding(.bottom)
-                }
+                } // end Group
                 .font(.title2)
                 
                 HStack {
@@ -55,15 +59,15 @@ struct PreferenceView: View {
                     Picker("", selection: $selectedUnit) {
                         ForEach(UnitSystem.allCases, id: \.self) { unit in
                             Text(unit.rawValue.capitalized)
-                        }
-                    }
+                        } // end ForEach
+                    } // end Picker
                     .padding(.bottom)
-                }
+                } // end HStack
                 .font(.title2)
                 
-                Toggle(isOn: $degreeSymbolShowing) {
+                Toggle(isOn: $degreeUnitShowing) {
                     Text("Show F/C after temp value:")
-                }
+                } // end Toggle
                 .font(.title2)
                 .bold()
                 
@@ -71,37 +75,57 @@ struct PreferenceView: View {
                     Spacer()
                     Text("42°\(degreeUnit)")
                     Spacer()
-                }
+                } // end HStack
                 .font(.system(size: 150))
                 .fontWeight(.thin)
 
                 Spacer()
-            }
+            }  // end VStack
             .padding()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {
-                        //TODO:
+                        dismiss()
                     } label: {
                         Text("Cancel")
-                    }
-                }
+                    } // end Buttton
+                }// end ToolbarItem
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        //TODO:
+                        preferences.forEach { modelContext.delete($0) }
+                        let preference = Preference(
+                            locationName: locationName,
+                            latString: latString,
+                            longString: longString,
+                            selectedUnit: selectedUnit,
+                            degreeUnitShowing: degreeUnitShowing
+                        )
+                        modelContext.insert(preference)
+                        do {
+                            try modelContext.save()
+                        } catch {
+                            print("Error saving: \(error)")
+                        } // end do
+                        dismiss()
                     } label: {
                         Text("Save")
-                    }
-                    
-                }
-            }
-
+                    } // end Buttton
+                } // end ToolbarItem
+            } // end .toolbar
+        } // end VStack
+        .task {
+            if preferences.count > 0 {
+                locationName = preferences[0].locationName
+                latString = preferences[0].latString
+                longString = preferences[0].longString
+                selectedUnit = preferences[0].selectedUnit
+                degreeUnitShowing = preferences[0].degreeUnitShowing
+            } // end if
         }
-    }
-    
-    
-}
+    }  // end body
+} // end PreferenceView
 
 #Preview {
     PreferenceView()
-}
+        .modelContainer(Preference.preview)
+} // end #Preview
